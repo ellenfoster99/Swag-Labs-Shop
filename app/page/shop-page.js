@@ -34,55 +34,55 @@ export class ShopPage {
         this.burgerMenuList = page.locator('div [class="bm-item-list"]')
     }
     async openProductByName(name) {
-    await this.productsNames
-        .filter({ hasText: name })
-        .first()
-        .click();
-}
+        await this.productsNames
+            .filter({ hasText: name })
+            .first()
+            .click();
+    }
 
- async getProductsNames() {
-    return await this.productsNames.allTextContents();
-}
+    async getProductsNames() {
+        return await this.productsNames.allTextContents();
+    }
 
-async getProductsPrices() {
-    const prices = await this.productsPrices.allTextContents();
+    async getProductsPrices() {
+        const prices = await this.productsPrices.allTextContents();
 
-    return prices.map(price =>
-        Number(price.replace('$', ''))
-    );
-}
+        return prices.map(price =>
+            Number(price.replace('$', ''))
+        );
+    }
 
-async selectFilter(value) {
-    await this.filter.selectOption(value);
-}
+    async selectFilter(value) {
+        await this.filter.selectOption(value);
+    }
 
-async expectProductsSortedAToZ() {
-    const actual = await this.getProductsNames();
-    const expected = [...actual].sort();
+    async expectProductsSortedAToZ() {
+        const actual = await this.getProductsNames();
+        const expected = [...actual].sort();
 
-    expect(actual).toEqual(expected);
-}
+        expect(actual).toEqual(expected);
+    }
 
-async expectProductsSortedZToA() {
-    const actual = await this.getProductsNames();
-    const expected = [...actual].sort().reverse();
+    async expectProductsSortedZToA() {
+        const actual = await this.getProductsNames();
+        const expected = [...actual].sort().reverse();
 
-    expect(actual).toEqual(expected);
-}
+        expect(actual).toEqual(expected);
+    }
 
-async expectProductsSortedLowToHigh() {
-    const actual = await this.getProductsPrices();
-    const expected = [...actual].sort((a, b) => a - b);
+    async expectProductsSortedLowToHigh() {
+        const actual = await this.getProductsPrices();
+        const expected = [...actual].sort((a, b) => a - b);
 
-    expect(actual).toEqual(expected);
-}
+        expect(actual).toEqual(expected);
+    }
 
-async expectProductsSortedHighToLow() {
-    const actual = await this.getProductsPrices();
-    const expected = [...actual].sort((a, b) => b - a);
+    async expectProductsSortedHighToLow() {
+        const actual = await this.getProductsPrices();
+        const expected = [...actual].sort((a, b) => b - a);
 
-    expect(actual).toEqual(expected);
-}
+        expect(actual).toEqual(expected);
+    }
 
     async clickFirstProductAddToCartButton() {
         await this.firstProductAddToCartButton.click()
@@ -134,6 +134,14 @@ async expectProductsSortedHighToLow() {
     }
     async clickLogout() {
         await this.logout.click()
+    }
+
+    //пример команды на визибл через all когда локатор не уникальный
+
+    async expectProductsToBeVisible() {
+        for(const product of await this.productsNames.all()) {
+            await expect(product).toBeVisible();
+        }
     }
 
 }

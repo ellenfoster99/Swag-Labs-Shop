@@ -8,6 +8,8 @@ import { ProductCartPage } from '../app/page/product-cart-page';
 test.describe('Login tests', () => {
   test('Login as standard user', async ({ page }) => {
     const loginPage = new LoginPage(page)
+    //TODO:
+    //Удалить shopPage так как он не используется в этом тесте
     const shopPage = new ShopPage(page)
     await loginPage.visit()
     await expect(loginPage.title).toHaveText('Swag Labs')
@@ -15,6 +17,7 @@ test.describe('Login tests', () => {
     await expect(loginPage.passwordField).toHaveValue('')
     await loginPage.clickLoginButton()
     await expect(loginPage.errorField).toHaveText('Epic sadface: Username is required')
+    //второй тест
     await loginPage.clickErrorFieldExitButton()
     await loginPage.setLoginField('standard_user')
     await expect(loginPage.loginField).toHaveValue('standard_user')
@@ -60,7 +63,6 @@ test.describe('Login tests', () => {
     await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html')
   });
 
-
   test('Products Check', async ({ page }) => {
     const loginPage = new LoginPage(page)
     const shopPage = new ShopPage(page)
@@ -69,8 +71,10 @@ test.describe('Login tests', () => {
     await loginPage.visit()
     await loginPage.setLoginField('standard_user')
     await expect(loginPage.loginField).toHaveValue('standard_user')
+    //TODO:обязателшьно провенрка на висибл
     await loginPage.setPasswordField('secret_sauce')
     await expect(loginPage.passwordField).toHaveValue('secret_sauce')
+    //TODO: обязателшьно провенрка на висибл
     await loginPage.clickLoginButton()
     await expect(shopPage.sectionProductsTitle).toHaveText('Products')
     await expect(shopPage.sectionProductsTitle).toBeVisible()
@@ -82,6 +86,9 @@ test.describe('Login tests', () => {
       "Sauce Labs Onesie",
       "Test.allTheThings() T-Shirt (Red)"
     ])
+    await shopPage.expectProductsToBeVisible()
+    //TODO: Проверку на висибл через команду .all пример 
+
     await expect(shopPage.productsPrices).toHaveText([
       "$29.99",
       "$9.99",
@@ -90,7 +97,8 @@ test.describe('Login tests', () => {
       "$7.99",
       "$15.99"
     ])
-    //один товар добавлено и удаленно со страници
+    // Сделать преверку на висибл через команду .all пример как expectProductsToBeVisible
+    //TODO: один товар добавлено и удаленно со страници
     await expect(shopPage.firstProductRemoveButton).toBeHidden()
     await shopPage.clickFirstProductAddToCartButton()
     await expect(shopPage.firstProductRemoveButton).toHaveText('Remove')
